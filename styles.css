@@ -2,6 +2,10 @@ body, html {
     background-color: black;
     color: white;
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Förhindrar skrollning */
+    height: 100%; /* Sätter höjden till hela skärmen */
   }
   
   #calendar {
