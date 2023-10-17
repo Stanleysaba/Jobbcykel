@@ -1,0 +1,40 @@
+body, html {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+  }
+  
+  #calendar {
+    background-color: darkgreen;
+    margin: auto;
+    width: 500px;
+  }
+  
+  #header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+  }
+  
+  #button-container {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  #days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+  
+  .day {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .work-day::after {
+    content: "✘";
+    color: red;
+    font-size: 24px;
+  }
+  
