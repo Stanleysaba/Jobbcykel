@@ -14,12 +14,12 @@ body, html {
     width: 500px;
   }
   
-  #header {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    align-items: center;
-  }
+#header {
+  display: flex;
+  justify-content: center; /* Centrerar horisontellt */
+  align-items: center;     /* Centrerar vertikalt */
+  height: 100%;             /* Tar upp hela tillgängliga höjden */
+}
   
   #button-container {
     margin-left: auto;
