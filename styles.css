@@ -11,7 +11,8 @@ body, html {
 #calendar {
     background-color: darkgreen;
     margin: auto;
-    width: 500px;
+    width: 100%;
+    max-width: 800px;
 }
 
 #header {
@@ -32,7 +33,7 @@ body, html {
 }
 
 .day {
-    padding: 20px;
+    padding: 1em;
     text-align: center;
 }
 
@@ -48,4 +49,14 @@ body, html {
 
 .current-day {
     border: 2px solid white;
+}
+
+/* Media Query för mobila enheter */
+@media (max-width: 768px) {
+  .day {
+    padding: 0.5em;
+  }
+  #header {
+    flex-direction: column;
+  }
 }
