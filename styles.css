@@ -51,6 +51,11 @@ body, html {
     border: 2px solid white;
 }
 
+.red-day .day-number {
+    color: red;
+}
+
+
 /* Media Query för mobila enheter */
 @media (max-width: 768px) {
   .day {
