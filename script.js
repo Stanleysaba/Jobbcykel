@@ -1,18 +1,12 @@
 // Registrera Service Worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js')
-      .then((reg) => {
-        console.log('Service worker registrerad.', reg);
-      });
+        .then((reg) => {
+            console.log('Service worker registrerad.', reg);
+        });
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    // Set to current date when the page loads
-    currentDate = new Date();
-    populateCalendar();
-    fetchRedDays();  // Fetch red days when the page loads
-});
-
+// Initiera variabler
 const schedule = [
     'Jobb', 'Jobb', 'Jobb', 'Jobb', 'Jobb',
     'Ledig', 'Ledig', 'Ledig', 'Ledig',
@@ -25,6 +19,37 @@ const schedule = [
 const startDate = new Date('2023-10-18');
 let currentDate = new Date();
 
+// Swipe-funktionalitet
+let touchStartX = 0;
+let touchEndX = 0;
+
+function handleTouchStart(e) {
+    touchStartX = e.touches[0].clientX;
+    console.log('Touch start:', touchStartX); // Logga värde
+}
+
+function handleTouchEnd(e) {
+    touchEndX = e.changedTouches[0].clientX;
+    console.log('Touch end:', touchEndX); // Logga värde
+    handleSwipeGesture();
+}
+
+function handleSwipeGesture() {
+    if (touchEndX < touchStartX) {
+        // Swipe Left, go to next month
+        currentDate.setMonth(currentDate.getMonth() + 1);
+    }
+    
+    if (touchEndX > touchStartX) {
+        // Swipe Right, go to previous month
+        currentDate.setMonth(currentDate.getMonth() - 1);
+    }
+
+    populateCalendar();
+    fetchRedDays();
+}
+
+// Funktioner för att hantera kalendern
 function dayDifference(date1, date2) {
     return Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
 }
@@ -45,7 +70,6 @@ function populateCalendar() {
         const dayDiv = document.createElement('div');
         dayDiv.className = 'day';
 
-        // Highlight the current day
         if (i === today.getDate() && currentDate.getMonth() === today.getMonth() && currentDate.getFullYear() === today.getFullYear()) {
             dayDiv.classList.add('current-day');
         }
@@ -88,15 +112,25 @@ function fetchRedDays() {
         .catch(error => console.log('Error fetching red days:', error));
 }
 
-// Update calendar and fetch red days when buttons are clicked
+// Event Listeners
+document.addEventListener('DOMContentLoaded', (event) => {
+    currentDate = new Date();
+    populateCalendar();
+    fetchRedDays();
+    
+    const swipeContainer = document.getElementById('swipe-container');
+    swipeContainer.addEventListener('touchstart', handleTouchStart, false);
+    swipeContainer.addEventListener('touchend', handleTouchEnd, false);
+});
+
 document.getElementById('prevMonth').addEventListener('click', () => {
     currentDate.setMonth(currentDate.getMonth() - 1);
     populateCalendar();
-    fetchRedDays();  // Fetch red days when the month changes
+    fetchRedDays();
 });
 
 document.getElementById('nextMonth').addEventListener('click', () => {
     currentDate.setMonth(currentDate.getMonth() + 1);
     populateCalendar();
-    fetchRedDays();  // Fetch red days when the month changes
+    fetchRedDays();
 });
