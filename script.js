@@ -4,12 +4,13 @@ if ('serviceWorker' in navigator) {
       .then((reg) => {
         console.log('Service worker registrerad.', reg);
       });
-  }
+}
 
 document.addEventListener('DOMContentLoaded', (event) => {
     // Set to current date when the page loads
     currentDate = new Date();
     populateCalendar();
+    fetchRedDays();  // Fetch red days when the page loads
 });
 
 const schedule = [
@@ -68,12 +69,34 @@ function populateCalendar() {
     }
 }
 
+function fetchRedDays() {
+    console.log("Fetching red days...");
+    fetch(`http://localhost:5000/red-days/${currentDate.getFullYear()}`)
+        .then(response => response.json())
+        .then(data => {
+            const daysDiv = document.getElementById('days');
+            const dayElements = daysDiv.getElementsByClassName('day');
+
+            Array.from(dayElements).forEach((dayElement, index) => {
+                const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), index + 1);
+                const dateString = date.toISOString().split('T')[0];
+                if (data[dateString]) {
+                    dayElement.classList.add('red-day');
+                }
+            });
+        })
+        .catch(error => console.log('Error fetching red days:', error));
+}
+
+// Update calendar and fetch red days when buttons are clicked
 document.getElementById('prevMonth').addEventListener('click', () => {
     currentDate.setMonth(currentDate.getMonth() - 1);
     populateCalendar();
+    fetchRedDays();  // Fetch red days when the month changes
 });
 
 document.getElementById('nextMonth').addEventListener('click', () => {
     currentDate.setMonth(currentDate.getMonth() + 1);
     populateCalendar();
+    fetchRedDays();  // Fetch red days when the month changes
 });
